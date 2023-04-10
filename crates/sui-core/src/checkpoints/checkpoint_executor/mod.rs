@@ -752,20 +752,8 @@ async fn execute_transactions(
                 // all of its input available.
                 let pending_digest = missing_digests.first().unwrap();
                 let missing_input = transaction_manager.get_missing_input(pending_digest);
-                let pending_transaction = authority_store
-                    .get_transaction_block(pending_digest)?
-                    .expect("state-sync should have ensured that the transaction exists");
 
-                warn!(
-                    "Transaction {pending_digest:?} has missing input objects {missing_input:?}\
-                    \nTransaction input: {:?}\nTransaction content: {:?}",
-                    pending_transaction
-                        .data()
-                        .intent_message()
-                        .value
-                        .input_objects(),
-                    pending_transaction,
-                );
+                warn!("Transaction {pending_digest:?} has missing input objects {missing_input:?}");
                 periods += 1;
             }
             Ok(Err(err)) => return Err(err),
